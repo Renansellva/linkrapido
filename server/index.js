@@ -22,7 +22,13 @@ const storage = multer.diskStorage({
     cb(null, unique + path.extname(file.originalname));
   }
 });
-const upload = multer({ storage });
+// Limite de tamanho: 100MB
+const upload = multer({ 
+  storage,
+  limits: {
+    fileSize: 100 * 1024 * 1024 // 100MB
+  }
+});
 
 // Mapa para associar shortId às informações do arquivo
 const linkMap = new Map();
@@ -55,28 +61,45 @@ app.get("/", (req, res) => {
 });
 
 // Upload com link curto
-app.post("/api/upload", upload.single("file"), (req, res) => {
-  if (!req.file) return res.status(400).json({ error: "No file uploaded." });
+app.post("/api/upload", (req, res, next) => {
+  upload.single("file")(req, res, (err) => {
+    // Tratamento de erro do multer
+    if (err) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ error: "Arquivo muito grande. Tamanho máximo: 100MB" });
+      }
+      return res.status(400).json({ error: `Erro no upload: ${err.message}` });
+    }
+    
+    if (!req.file) {
+      return res.status(400).json({ error: "Nenhum arquivo enviado." });
+    }
+    
+    // Validação adicional de tamanho
+    if (req.file.size > 100 * 1024 * 1024) {
+      return res.status(400).json({ error: "Arquivo muito grande. Tamanho máximo: 100MB" });
+    }
 
-  const actualFilename = req.file.filename;
-  const originalName = req.file.originalname;
-  const fileSize = req.file.size;
-  const mimeType = req.file.mimetype;
-  const shortId = nanoid(7);
+    const actualFilename = req.file.filename;
+    const originalName = req.file.originalname;
+    const fileSize = req.file.size;
+    const mimeType = req.file.mimetype;
+    const shortId = nanoid(7);
 
-  // Armazenar informações completas do arquivo
-  linkMap.set(shortId, {
-    filename: actualFilename,
-    originalName: originalName,
-    size: fileSize,
-    mimeType: mimeType
-  });
+    // Armazenar informações completas do arquivo
+    linkMap.set(shortId, {
+      filename: actualFilename,
+      originalName: originalName,
+      size: fileSize,
+      mimeType: mimeType
+    });
 
-  const PUBLIC_URL = process.env.PUBLIC_URL || `${req.protocol}://${req.get("host")}`;
+    const PUBLIC_URL = process.env.PUBLIC_URL || `${req.protocol}://${req.get("host")}`;
 
-  res.json({
-    link: `${PUBLIC_URL}/api/s/${shortId}`,
-    shortId
+    res.json({
+      link: `${PUBLIC_URL}/api/s/${shortId}`,
+      shortId
+    });
   });
 });
 

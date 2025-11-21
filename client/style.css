@@ -13,6 +13,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-bottom: 200px; /* Espaço para o componente PIX fixo */
 }
 
 .container {
@@ -33,6 +34,40 @@ body {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(24px);}
   to { opacity: 1; transform: translateY(0);}
+}
+
+/* Animações para a barra de progresso */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
+  }
+  50% {
+    box-shadow: 0 2px 16px rgba(34, 197, 94, 0.6);
+  }
+}
+
+/* Classe para quando o upload está completo */
+.progress-bar-complete {
+  animation: pulse 1.5s ease-in-out infinite !important;
+}
+
+/* Animação para o botão WhatsApp */
+@keyframes whatsappPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
 }
 
 h1, h2, h3 {
@@ -171,20 +206,24 @@ body::-webkit-scrollbar-track {
   background: rgba(34, 38, 59, 0.98);
   border-radius: 16px;
   box-shadow: 0 4px 16px 0 rgba(0,0,0,0.25);
-  padding: 14px 18px 14px 14px;
+  padding: 18px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 12px;
   z-index: 1000;
   transition: opacity 0.2s;
+  max-width: 320px;
+  width: auto;
 }
 
 .pix-cafezinho img {
-  width: 56px;
-  height: 56px;
+  width: 100px;
+  height: 100px;
   border-radius: 10px;
   border: 2px solid #22c55e;
   background: #fff;
+  flex-shrink: 0;
 }
 
 .pix-cafezinho span {
@@ -192,17 +231,19 @@ body::-webkit-scrollbar-track {
   font-size: 1rem;
   font-weight: 600;
   white-space: nowrap;
+  text-align: center;
 }
 
 @media (max-width: 600px) {
   .pix-cafezinho {
     right: 8px;
     bottom: 8px;
-    padding: 6px 10px 6px 6px;
+    padding: 12px;
+    max-width: calc(100vw - 16px);
   }
   .pix-cafezinho img {
-    width: 38px;
-    height: 38px;
+    width: 80px;
+    height: 80px;
   }
   .pix-cafezinho span {
     font-size: 0.92rem;
@@ -213,22 +254,11 @@ body::-webkit-scrollbar-track {
 
 
 
-.pix-cafezinho img {
-  width: 100px;
-  height: 100px;
-  border-radius: 10px;
-  border: 2px solid #22c55e;
-  background: #fff;
-}
+/* Removido duplicado - já está definido acima */
 
 
 
-@media (max-width: 600px) {
-  .pix-cafezinho img {
-    width: 60px;
-    height: 60px;
-  }
-}
+/* Removido duplicado - já está definido acima */
 
 
 
@@ -433,15 +463,20 @@ input[type="file"] {
   background: #1a1c29;
   color: #c7d0f7; /* Cor do texto "nenhum arquivo selecionado" */
   max-width: 100%; /* Para não estourar o container */
+  width: 100%; /* Garante que ocupe toda a largura */
+  display: block; /* Para centralizar funcionar */
+  margin: 0 auto; /* Centraliza o elemento */
+  text-align: center; /* Tenta centralizar o texto */
+  text-align-last: center; /* Centraliza a última linha do texto */
 }
 
-/* Estilizando a aparência do botão do input[type="file"] (mais avançado e varia entre navegadores) */
+/* Estilizando a aparência do botão do input[type="file"] */
 input[type="file"]::file-selector-button {
   background: linear-gradient(90deg, #3b5bdb 0%, #5eead4 100%);
   color: #fff;
-  font-weight: 600; /* Era 700, ajustei para 600 */
+  font-weight: 600;
   border: none;
-  border-radius: 6px; /* Um pouco menor que o input geral */
+  border-radius: 6px;
   padding: 10px 15px;
   margin-right: 10px;
   cursor: pointer;
@@ -489,6 +524,9 @@ input[type="file"]::file-selector-button:hover {
 
 /* Exemplo de ajuste em telas pequenas se necessário: */
 @media (max-width: 400px) { /* Se os botões ficarem muito próximos */
+  body {
+    padding-bottom: 250px; /* Mais espaço em telas pequenas */
+  }
   .sugestoes-button {
     bottom: 70px; /* Sobe um pouco o botão de sugestões */
     left: 15px;
@@ -512,14 +550,7 @@ input[type="file"]::file-selector-button:hover {
 
 
 
-.pix-cafezinho {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  /* Se o .pix-cafezinho estiver dentro de um container que o limita, ótimo.
-     Senão, você pode querer dar uma largura máxima para ele também.
-     max-width: 100%; ou um valor específico como 500px */
-}
+/* Removido duplicado - já está definido acima */
 
 .info-pix {
   display: flex;
