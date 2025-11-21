@@ -10,12 +10,74 @@ const API_URL = "https://linkp2p.onrender.com/api";
 
 // Definição do componente PixCafezinho (como já tínhamos)
 function PixCafezinho() {
+  const [feedbackPixCopia, setFeedbackPixCopia] = useState('');
+  const pixLink = "00020126580014BR.GOV.BCB.PIX013690a011cb-034e-4c2e-b09e-6fb4025b07985204000053039865802BR5920Renan Costa da Silva6009SAO PAULO62140510W2AWVsMnQ1630449C9";
+
+  const copiarLinkPix = async () => {
+    try {
+      await navigator.clipboard.writeText(pixLink);
+      setFeedbackPixCopia('Link PIX copiado!');
+      setTimeout(() => setFeedbackPixCopia(''), 2000);
+    } catch (err) {
+      console.error('Falha ao copiar o link PIX: ', err);
+      setFeedbackPixCopia('Falha ao copiar!');
+      setTimeout(() => setFeedbackPixCopia(''), 2000);
+    }
+  };
+
   return (
     <div className="pix-cafezinho">
       <img src="/pixQrCode.jpeg" alt="QR Code Pix para um cafezinho" />
-      <span>Pix para um cafezinho ☕
-        
-      </span>
+      <span>Pix para um cafezinho ☕</span>
+      
+      <div style={{ marginTop: '15px', width: '100%', maxWidth: '300px' }}>
+        <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem', color: '#f4f6fa', fontWeight: '500' }}>
+          Link do PIX:
+        </label>
+        <input
+          type="text"
+          value={pixLink}
+          readOnly
+          onClick={(e) => e.target.select()}
+          style={{
+            width: '100%',
+            padding: '10px',
+            boxSizing: 'border-box',
+            borderRadius: '8px',
+            border: '1.8px solid #313b5f',
+            background: '#1a1c29',
+            color: '#f4f6fa',
+            fontSize: '0.85rem',
+            fontFamily: 'monospace',
+            wordBreak: 'break-all'
+          }}
+        />
+        <button
+          onClick={copiarLinkPix}
+          className="button"
+          style={{
+            width: '100%',
+            marginTop: '10px',
+            padding: '10px',
+            fontSize: '0.9rem'
+          }}
+        >
+          Copiar Link PIX
+        </button>
+        {feedbackPixCopia && (
+          <p
+            style={{
+              marginTop: '10px',
+              fontSize: '0.9rem',
+              color: feedbackPixCopia.includes('Falha') ? '#ff8a8a' : '#30e88b',
+              fontWeight: '600',
+              textAlign: 'center'
+            }}
+          >
+            {feedbackPixCopia}
+          </p>
+        )}
+      </div>
     </div>
   );
 }
