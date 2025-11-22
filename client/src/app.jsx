@@ -5,8 +5,12 @@ import axios from "axios";
 // import './App.css'; // ou './style.css'
 
 
-//const API_URL = "https://linkp2p.onrender.com/api";
-const API_URL = "http://localhost:4000/api";
+// Detecção automática do ambiente
+// Se estiver em localhost, usa o servidor local
+// Se estiver em produção (Vercel), usa o servidor no Render
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? "http://localhost:4000/api"
+  : "https://linkp2p.onrender.com/api";
 
 // Definição do componente PixCafezinho (como já tínhamos)
 function PixCafezinho() {
@@ -190,9 +194,33 @@ export default function App() {
       setLink(res.data.link);
     } catch (err) {
       console.error("Erro ao enviar arquivo:", err);
-      const errorMessage = err.response?.data?.error || 
-                           err.message || 
-                           "Erro ao enviar arquivo. Tente novamente.";
+      
+      let errorMessage = "Erro ao enviar arquivo. Tente novamente.";
+      
+      // Tratamento específico de erros de rede
+      if (err.code === 'ECONNABORTED' || err.message === 'Network Error' || err.message.includes('network')) {
+        const serverUrl = API_URL.replace('/api', '');
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+          errorMessage = `❌ Erro de conexão! Verifique se o servidor está rodando em ${serverUrl}\n\nPara iniciar: cd server && npm start`;
+        } else {
+          errorMessage = `❌ Erro de conexão com o servidor! Verifique se o servidor no Render está online.\n\nURL: ${serverUrl}`;
+        }
+      } else if (err.code === 'ERR_NETWORK' || !err.response) {
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+          errorMessage = `❌ Servidor não encontrado! Certifique-se de que o servidor está rodando na porta 4000.\n\nPara iniciar: cd server && npm start`;
+        } else {
+          errorMessage = `❌ Servidor não encontrado! O servidor no Render pode estar offline ou demorando para iniciar.\n\nURL: ${API_URL.replace('/api', '')}`;
+        }
+      } else if (err.response?.data?.error) {
+        errorMessage = `⚠️ ${err.response.data.error}`;
+      } else if (err.response?.status === 413) {
+        errorMessage = "⚠️ Arquivo muito grande! Tamanho máximo: 100MB";
+      } else if (err.response?.status === 400) {
+        errorMessage = `⚠️ ${err.response.data?.error || 'Erro na requisição'}`;
+      } else if (err.message) {
+        errorMessage = `⚠️ ${err.message}`;
+      }
+      
       setError(errorMessage);
       setLink("");
     }
@@ -292,8 +320,12 @@ export default function App() {
           )}
 
           {error && (
-            <div className="error-message" style={{ marginBottom: '15px' }}>
-              ⚠️ {error}
+            <div className="error-message" style={{ 
+              marginBottom: '15px',
+              whiteSpace: 'pre-line',
+              lineHeight: '1.6'
+            }}>
+              {error}
             </div>
           )}
 
