@@ -344,15 +344,38 @@ export default function App() {
           {file && (
             <div style={{
               background: 'rgba(26, 28, 41, 0.7)',
-              padding: '12px',
-              borderRadius: '8px',
+              padding: '16px',
+              borderRadius: '10px',
               marginBottom: '15px',
-              border: '1px solid #313b5f'
+              border: '1px solid #313b5f',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '8px'
             }}>
-              <p style={{ margin: '0 0 5px 0', color: '#f4f6fa', fontWeight: '600' }}>
-                📄 {file.name}
+              <div style={{
+                fontSize: '2.5rem',
+                marginBottom: '5px'
+              }}>
+                📄
+              </div>
+              <p style={{ 
+                margin: '0', 
+                color: '#f4f6fa', 
+                fontWeight: '600',
+                fontSize: '0.95rem',
+                wordBreak: 'break-word',
+                maxWidth: '100%'
+              }}>
+                {file.name}
               </p>
-              <p style={{ margin: '0', fontSize: '0.85rem', color: '#8a93b3' }}>
+              <p style={{ 
+                margin: '0', 
+                fontSize: '0.85rem', 
+                color: '#8a93b3',
+                fontWeight: '500'
+              }}>
                 Tamanho: {formatFileSize(file.size)}
               </p>
             </div>
