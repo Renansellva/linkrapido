@@ -13,7 +13,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-bottom: 200px; /* Espaço para o componente PIX fixo */
+  padding: 32px 16px;
+  box-sizing: border-box;
 }
 
 .container {
@@ -23,12 +24,13 @@ body {
   padding: 40px 32px;
   max-width: 420px;
   width: 95vw;
-  margin: 32px auto;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 26px;
   animation: fadeIn 0.7s;
   backdrop-filter: blur(2px);
+  box-sizing: border-box;
 }
 
 @keyframes fadeIn {
@@ -188,11 +190,16 @@ body::-webkit-scrollbar-track {
 /* Responsivo para telas menores */
 @media (max-width: 500px) {
   .container {
-    padding: 18px 8px;
-    max-width: 99vw;
+    padding: 20px 16px;
+    max-width: 100%;
+    width: calc(100% - 32px);
   }
   h1 {
     font-size: 1.25rem;
+  }
+  .pix-cafezinho {
+    padding: 15px;
+    margin: 20px auto 0;
   }
 }
 
@@ -200,53 +207,52 @@ body::-webkit-scrollbar-track {
 
 
 .pix-cafezinho {
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
+  position: relative;
   background: rgba(34, 38, 59, 0.98);
   border-radius: 16px;
   box-shadow: 0 4px 16px 0 rgba(0,0,0,0.25);
-  padding: 18px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  z-index: 1000;
-  transition: opacity 0.2s;
-  max-width: 320px;
-  width: auto;
+  gap: 15px;
+  margin: 32px auto 0;
+  max-width: 420px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .pix-cafezinho img {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 10px;
   border: 2px solid #22c55e;
   background: #fff;
   flex-shrink: 0;
+  object-fit: contain;
 }
 
 .pix-cafezinho span {
   color: #22c55e;
   font-size: 1rem;
   font-weight: 600;
-  white-space: nowrap;
   text-align: center;
+  margin: 0;
 }
 
 @media (max-width: 600px) {
   .pix-cafezinho {
-    right: 8px;
-    bottom: 8px;
-    padding: 12px;
-    max-width: calc(100vw - 16px);
+    margin: 20px auto 0;
+    padding: 15px;
+    max-width: 100%;
+    width: calc(100% - 32px);
   }
   .pix-cafezinho img {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
   }
   .pix-cafezinho span {
-    font-size: 0.92rem;
+    font-size: 0.95rem;
   }
 }
 
@@ -523,17 +529,24 @@ input[type="file"]::file-selector-button:hover {
    empilhá-los em telas muito pequenas se necessário. */
 
 /* Exemplo de ajuste em telas pequenas se necessário: */
-@media (max-width: 400px) { /* Se os botões ficarem muito próximos */
+@media (max-width: 400px) {
   body {
-    padding-bottom: 250px; /* Mais espaço em telas pequenas */
+    padding: 20px 8px;
   }
   .sugestoes-button {
-    bottom: 70px; /* Sobe um pouco o botão de sugestões */
+    bottom: 15px;
     left: 15px;
+    font-size: 0.85rem;
+    padding: 8px 14px;
   }
   .pix-cafezinho {
-    bottom: 15px; /* Mantém o pix mais abaixo ou ajusta conforme necessário */
-    right: 15px;
+    padding: 12px;
+    margin: 15px auto 0;
+    width: calc(100% - 16px);
+  }
+  .pix-cafezinho img {
+    width: 90px;
+    height: 90px;
   }
 }
 

@@ -31,11 +31,30 @@ function PixCafezinho() {
 
   return (
     <div className="pix-cafezinho">
-      <img src="/pixQrCode.jpeg" alt="QR Code Pix para um cafezinho" />
-      <span>Pix para um cafezinho ☕</span>
+      <div style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        gap: '12px',
+        width: '100%'
+      }}>
+        <img src="/pixQrCode.jpeg" alt="QR Code Pix para um cafezinho" />
+        <span>Pix para um cafezinho ☕</span>
+      </div>
       
-      <div style={{ marginTop: '10px', width: '100%' }}>
-        <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem', color: '#f4f6fa', fontWeight: '500' }}>
+      <div style={{ 
+        marginTop: '15px', 
+        width: '100%',
+        paddingTop: '15px',
+        borderTop: '1px solid rgba(49, 59, 95, 0.5)'
+      }}>
+        <label style={{ 
+          display: 'block', 
+          marginBottom: '8px', 
+          fontSize: '0.9rem', 
+          color: '#f4f6fa', 
+          fontWeight: '500' 
+        }}>
           Link do PIX:
         </label>
         <input
@@ -51,9 +70,10 @@ function PixCafezinho() {
             border: '1.8px solid #313b5f',
             background: '#1a1c29',
             color: '#f4f6fa',
-            fontSize: '0.8rem',
+            fontSize: '0.75rem',
             fontFamily: 'monospace',
-            wordBreak: 'break-all'
+            wordBreak: 'break-all',
+            lineHeight: '1.4'
           }}
         />
         <button
@@ -453,12 +473,13 @@ export default function App() {
         )}
       </div>
 
+      {/* Componente PIX integrado ao layout */}
+      <PixCafezinho />
+
       {/* Botão de Sugestões */}
       <button onClick={handleSugestoesClick} className="sugestoes-button">
         Sugestões
       </button>
-
-      <PixCafezinho />
     </>
   );
 }
