@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import axios from "axios";
+import { QRCodeSVG } from "qrcode.react";
 // import './App.css'; // ou './style.css'
 
 
@@ -38,7 +39,25 @@ function PixCafezinho() {
         gap: '12px',
         width: '100%'
       }}>
-        <img src="/pixQrCode.jpeg" alt="QR Code Pix para um cafezinho" />
+        <div style={{
+          background: '#fff',
+          padding: '15px',
+          borderRadius: '12px',
+          border: '2px solid #22c55e',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 4px 12px rgba(34, 197, 94, 0.2)'
+        }}>
+          <QRCodeSVG
+            value={pixLink}
+            size={120}
+            level="H"
+            includeMargin={false}
+            fgColor="#000000"
+            bgColor="#ffffff"
+          />
+        </div>
         <span>Pix para um cafezinho ☕</span>
       </div>
       
@@ -427,6 +446,39 @@ export default function App() {
         {link && (
           <div className="link-container" style={{ marginTop: '20px' }}>
             <b>Link para compartilhar:</b>
+            
+            {/* QR Code do link gerado */}
+            <div style={{ 
+              textAlign: 'center', 
+              margin: '15px 0',
+              padding: '15px',
+              background: 'rgba(26, 28, 41, 0.5)',
+              borderRadius: '8px'
+            }}>
+              <p style={{ margin: '0 0 10px 0', fontSize: '0.9rem', color: '#8a93b3' }}>
+                📱 Escaneie para acessar:
+              </p>
+              <div style={{
+                background: '#fff',
+                padding: '12px',
+                borderRadius: '8px',
+                border: '2px solid #30e88b',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 12px rgba(48, 232, 139, 0.2)'
+              }}>
+                <QRCodeSVG
+                  value={link}
+                  size={180}
+                  level="H"
+                  includeMargin={false}
+                  fgColor="#000000"
+                  bgColor="#ffffff"
+                />
+              </div>
+            </div>
+            
             <div style={{ margin: '10px 0' }}>
               <input
                 type="text"
